@@ -30,7 +30,14 @@ public class GameCanvas extends JPanel {
 
         // Cho de ve tat ca moi thu len
         this.setSize(1024, 600);
+        this.setupBackBuffered();
+        this.setupCharacter();
 
+        // draw
+        this.setVisible(true);
+    }
+
+    private void setupBackBuffered() {
         // The front buffer is displayed on screen and you draw to the back buffer,
         // then you swap them when you're done drawing (so the image in the back buffer is shown).
         // This is so the user never sees a partially drawn image as you're updating the screen
@@ -40,28 +47,13 @@ public class GameCanvas extends JPanel {
         this.backBuffered = new BufferedImage(1024, 600, BufferedImage.TYPE_INT_ARGB);
         // Lay co ve tu backbuffer => Dung graphics la ve len backbuffer
         this.graphics = this.backBuffered.getGraphics();
+    }
 
+    private void setupCharacter() {
         // Load anh
-        try {
-            this.starImage = ImageIO.read(new File("resources/images/star.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            this.playerImage = ImageIO.read(new File("resources/images/circle.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            this.enemyImage = ImageIO.read(new File("resources/images/circle.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // draw
-        this.setVisible(true);
+        this.starImage = this.loadImage("resources/images/star.png");
+        this.playerImage = this.loadImage("resources/images/circle.png");
+        this.enemyImage = this.loadImage("resources/images/circle.png");
     }
 
     // Noi de ve len trong gameCanvas
@@ -74,9 +66,7 @@ public class GameCanvas extends JPanel {
 
     // Ve het len backbuffer
     public void renderAll() {
-        // Ve background
-        this.graphics.setColor(Color.BLACK);
-        this.graphics.fillRect(0, 0, 1024, 600);
+        this.renderBackground();
 
         // Ve ngoi sao
         this.graphics.drawImage(this.starImage, positionXStar, positionYStar,5,5,null);
@@ -87,4 +77,20 @@ public class GameCanvas extends JPanel {
 
         this.repaint();
     }
+
+    private void renderBackground() {
+        // Ve background
+        this.graphics.setColor(Color.BLACK);
+        this.graphics.fillRect(0, 0, 1024, 600);
+    }
+
+    private BufferedImage loadImage(String path) {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            return null;
+        }
+
+    }
+
 }

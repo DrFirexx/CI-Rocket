@@ -16,44 +16,20 @@ public class GameWindow extends JFrame {
 
     public GameWindow() {
         this.setSize(1024, 600);
+        this.setupGameCanvas();
+        this.event();
+        this.setVisible(true);
+    }
 
+    private void setupGameCanvas() {
         // Dua gameCanvas vao gameWindow
         this.gameCanvas = new GameCanvas();
         this.add(this.gameCanvas);
+    }
 
-        this.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                System.out.println("keyTyped");
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT) gameCanvas.positionXPlayer += 10;
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) gameCanvas.positionXPlayer -= 10;
-
-                if (gameCanvas.positionXPlayer > 1024){
-                    gameCanvas.positionXPlayer = 0;
-                    gameCanvas.positionYPlayer = random.nextInt(600);
-                } else if (gameCanvas.positionXPlayer < 0) {
-                    gameCanvas.positionXPlayer = 1024;
-                    gameCanvas.positionYPlayer = random.nextInt(600);
-                }
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
-
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(1);
-            }
-        });
+    private void event() {
+        this.keyboardEvent();
+        this.windowEvent();
 
         // Spawn random star every 8 second, 8 second initial delay
         Timer timer = new Timer();
@@ -65,8 +41,41 @@ public class GameWindow extends JFrame {
             }
         };
         timer.schedule(spawnStar,8000,8000);
+    }
 
-        this.setVisible(true);
+    private void keyboardEvent() {
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) gameCanvas.positionXPlayer += 10;
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) gameCanvas.positionXPlayer -= 10;
+                if (e.getKeyCode() == KeyEvent.VK_UP) gameCanvas.positionYPlayer -= 10;
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) gameCanvas.positionYPlayer += 10;
+
+                if (gameCanvas.positionXPlayer > 1024){
+                    gameCanvas.positionXPlayer = 0;
+                    gameCanvas.positionYPlayer = random.nextInt(600);
+                } else if (gameCanvas.positionXPlayer < 0) {
+                    gameCanvas.positionXPlayer = 1024;
+                    gameCanvas.positionYPlayer = random.nextInt(600);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+    }
+
+    private void windowEvent() {
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(1);
+            }
+        });
     }
 
     public void gameLoop() {
