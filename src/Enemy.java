@@ -30,7 +30,7 @@ public class Enemy {
             enemy.image = GameCanvas.loadImage("resources/images/circle.png");
             enemy.width = 20;
             enemy.height = 20;
-            enemy.velocity = random.nextInt(5);
+            enemy.velocity = random.nextInt(2) + 1;
             GameCanvas.enemies.add(enemy);
             timeIntervalEnemy = 0;
         } else {
