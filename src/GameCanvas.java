@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
-    public static List<Star> stars;
     public static Player player;
+    public static List<Star> stars;
     public static List<Enemy> enemies;
 
     // Tao 1 backbuffer
@@ -49,7 +49,10 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupPlayer() {
+
         this.player = new Player();
+        this.player.position.set(200, 300);
+        this.player.velocity.set(3.5f, 0);
     }
 
     private void setupEnemy() {
@@ -68,35 +71,16 @@ public class GameCanvas extends JPanel {
     public void renderAll() {
         this.renderBackground();
         this.stars.forEach(star -> star.render(graphics));
-        this.player.render(graphics);
+        this.player.render(this.graphics);
         this.enemies.forEach(enemy -> enemy.render(graphics));
         this.repaint();
     }
 
-    public void playerMovement() {
-        if (player.x[0] > 1024){
-            player.x[0] = 0 + player.width;
-            player.y[0] = random.nextInt(600);
-        } else if (player.x[0] < 0) {
-            player.x[0] = 1024;
-            player.y[0] = random.nextInt(600);
-        }
-
-        if (player.y[0] > 600) {
-            player.y[0] = 0 + player.height;
-            player.x[0] = random.nextInt(1024);
-        } else if (player.y[0] < 0) {
-            player.y[0] = 600 - player.height;
-            player.x[0] = random.nextInt(1024);
-        }
-    }
-
     public void runAll() {
+        this.player.run();
+
         Star.createStar();
         this.stars.forEach(star -> star.run());
-
-        player.createPlayer();
-        this.playerMovement();
 
         Enemy.createEnemy();
         this.enemies.forEach(enemy -> enemy.run());
