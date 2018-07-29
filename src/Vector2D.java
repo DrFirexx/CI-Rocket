@@ -31,7 +31,7 @@ public class Vector2D {
         return this;
     }
 
-    public Vector2D  addUp(Vector2D vector2D) {
+    public Vector2D addUp(Vector2D vector2D) {
         return this.addUp(vector2D.x, vector2D.y);
     }
 
@@ -79,8 +79,8 @@ public class Vector2D {
 
     public Vector2D rotate(double angle) {
         double radian = Math.toRadians(angle);
-        float cos = (float) Math.cos(angle);
-        float sin = (float) Math.sin(angle);
+        float cos = (float) Math.cos(radian);
+        float sin = (float) Math.sin(radian);
         return new Vector2D(this.x*cos - this.y*sin,
                             this.x*sin + this.y*cos);
     }
