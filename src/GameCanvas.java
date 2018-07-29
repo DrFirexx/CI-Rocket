@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
+    public Background background;
     public static Player player;
     public static List<Star> stars;
     public static List<Enemy> enemies;
@@ -25,6 +26,7 @@ public class GameCanvas extends JPanel {
         // Cho de ve tat ca moi thu len
         this.setSize(1024, 600);
         this.setupBackBuffered();
+        this.setupBackground();
         this.setupCharacter();
 
         // draw
@@ -36,6 +38,10 @@ public class GameCanvas extends JPanel {
         this.backBuffered = new BufferedImage(1024, 600, BufferedImage.TYPE_INT_ARGB);
         // Lay co ve tu backbuffer => Dung graphics la ve len backbuffer
         this.graphics = this.backBuffered.getGraphics();
+    }
+
+    private void setupBackground() {
+        this.background = new Background();
     }
 
     private void setupCharacter() {
@@ -69,7 +75,7 @@ public class GameCanvas extends JPanel {
 
     // Ve het len backbuffer
     public void renderAll() {
-        this.renderBackground();
+        this.background.render(graphics);
         this.stars.forEach(star -> star.render(graphics));
         this.player.render(this.graphics);
         this.enemies.forEach(enemy -> enemy.render(graphics));
@@ -84,12 +90,6 @@ public class GameCanvas extends JPanel {
 
         Enemy.createEnemy();
         this.enemies.forEach(enemy -> enemy.run());
-    }
-
-    private void renderBackground() {
-        // Ve background
-        this.graphics.setColor(Color.BLACK);
-        this.graphics.fillRect(0, 0, 1024, 600);
     }
 
     public static BufferedImage loadImage(String path) {

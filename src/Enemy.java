@@ -6,38 +6,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 public class Enemy {
 
     public BufferedImage image;
 
-    public int x;
-    public int y;
+    public Vector2D position;
 
     public int width;
     public int height;
 
-    public int velocity;
-
-    private List<BulletEnemy> bulletEnemies;
+    public Vector2D velocity;
 
     private static int timeIntervalEnemy = 0;
-    private int timeIntervalBullet = 0;
-    public static Random random = new Random();
 
-    public void render(Graphics graphics) {
-        graphics.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-        this.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.render(graphics));
+    private List<BulletEnemy> bulletEnemies;
+    private int timeIntervalBullet = 0;
+
+    public static Random random = new Random();
+    
+    public Enemy() {
+        this.position = new Vector2D();
+        this.velocity = new Vector2D();
+        this.bulletEnemies = new ArrayList<>();
     }
 
     public static void createEnemy() {
         if (timeIntervalEnemy == 500) {
             Enemy enemy = new Enemy();
-            enemy.x = random.nextInt(1024);
-            enemy.y = random.nextInt(600);
+            enemy.position.set(random.nextInt(1024), random.nextInt(600));
             enemy.image = GameCanvas.loadImage("resources/images/circle.png");
             enemy.width = 20;
             enemy.height = 20;
-            enemy.velocity = random.nextInt(2) + 1;
+            enemy.velocity.set(random.nextInt(2)+1, 0);
             GameCanvas.enemies.add(enemy);
             timeIntervalEnemy = 0;
         } else {
@@ -45,8 +46,9 @@ public class Enemy {
         }
     }
 
-    public Enemy() {
-        this.bulletEnemies = new ArrayList<>();
+    public void render(Graphics graphics) {
+        graphics.drawImage(this.image, (int) this.position.x, (int) this.position.y, this.width, this.height, null);
+        this.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.render(graphics));
     }
 
     public void run() {
@@ -61,7 +63,7 @@ public class Enemy {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bulletEnemy.position.set(this.x, this.y);
+            bulletEnemy.position.set(this.position.x, this.position.y);
             bulletEnemy.velocity.set(2, 0);
             this.bulletEnemies.add(bulletEnemy);
             this.timeIntervalBullet = 0;
