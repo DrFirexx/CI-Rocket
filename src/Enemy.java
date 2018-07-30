@@ -18,10 +18,12 @@ public class Enemy {
 
     public Vector2D velocity;
 
-    private static int timeIntervalEnemy = 0;
+    private static int timeIntervalChasingEnemy = 0;
+    private static int timeIntervalShootingEnemy = 0;
 
     private List<BulletEnemy> bulletEnemies;
     private int timeIntervalBullet = 0;
+    private Vector2D bulletVelocity = new Vector2D(2, 0);
 
     public static Random random = new Random();
 
@@ -31,18 +33,36 @@ public class Enemy {
         this.bulletEnemies = new ArrayList<>();
     }
 
-    public static void createEnemy() {
-        if (timeIntervalEnemy == 500) {
+    public static void createChasingEnemy() {
+        if (timeIntervalChasingEnemy == 300) {
             Enemy enemy = new Enemy();
             enemy.position.set(random.nextInt(1024), random.nextInt(600));
             enemy.image = GameCanvas.loadImage("resources/images/circle.png");
             enemy.width = 20;
             enemy.height = 20;
             enemy.velocity.set(random.nextInt(2)+1, 0);
-            GameCanvas.enemies.add(enemy);
-            timeIntervalEnemy = 0;
+            GameCanvas.chasingEnemies.add(enemy);
+            timeIntervalChasingEnemy = 0;
         } else {
-            timeIntervalEnemy += 1;
+            timeIntervalChasingEnemy += 1;
+        }
+    }
+
+    public static void createShootingEnemy() {
+        if (timeIntervalShootingEnemy == 599) {
+            timeIntervalChasingEnemy = -1;
+        }
+        if (timeIntervalShootingEnemy == 600) {
+            Enemy enemy = new Enemy();
+            enemy.position.set(random.nextInt(1024), random.nextInt(600));
+            enemy.image = GameCanvas.loadImage("resources/images/circle.png");
+            enemy.width = 20;
+            enemy.height = 20;
+            enemy.velocity.set(random.nextInt(2)+1, 0);
+            GameCanvas.shootingEnemies.add(enemy);
+            timeIntervalShootingEnemy = 0;
+        } else {
+            timeIntervalShootingEnemy += 1;
         }
     }
 
@@ -51,7 +71,13 @@ public class Enemy {
         this.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.render(graphics));
     }
 
-    public void run() {
+    public void chasingEnemyRun() {
+        double angle = Math.atan2(GameCanvas.player.position.y - this.position.y, GameCanvas.player.position.x - this.position.x);
+        this.position.x += velocity.length() * Math.cos(angle);
+        this.position.y += velocity.length() * Math.sin(angle);
+    }
+
+    public void shootingEnemyRun() {
         this.shoot();
     }
 
@@ -64,7 +90,9 @@ public class Enemy {
                 e.printStackTrace();
             }
             bulletEnemy.position.set(this.position.x, this.position.y);
-            bulletEnemy.velocity.set(2, 0);
+            bulletEnemy.velocity.set(bulletVelocity);
+            bulletVelocity = bulletVelocity.rotate(5);
+
             this.bulletEnemies.add(bulletEnemy);
             this.timeIntervalBullet = 0;
         } else {
@@ -73,10 +101,4 @@ public class Enemy {
 
         this.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.run());
     }
-
-//    public void run() {
-//        double angle = Math.atan2(GameCanvas.player.y[0] - this.y, GameCanvas.player.x[0] - this.x);
-//        this.x += velocity * Math.cos(angle);
-//        this.y += velocity * Math.sin(angle);
-//    }
 }

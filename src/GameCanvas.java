@@ -13,7 +13,8 @@ public class GameCanvas extends JPanel {
     public Background background;
     public static Player player;
     public static List<Star> stars;
-    public static List<Enemy> enemies;
+    public static List<Enemy> chasingEnemies;
+    public static List<Enemy> shootingEnemies;
 
     // Tao 1 backbuffer
     private BufferedImage backBuffered;
@@ -62,7 +63,8 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupEnemy() {
-        this.enemies = new ArrayList<>();
+        this.chasingEnemies = new ArrayList<>();
+        this.shootingEnemies = new ArrayList<>();
     }
 
     // Noi de ve len trong gameCanvas
@@ -78,7 +80,8 @@ public class GameCanvas extends JPanel {
         this.background.render(graphics);
         this.stars.forEach(star -> star.render(graphics));
         this.player.render(this.graphics);
-        this.enemies.forEach(enemy -> enemy.render(graphics));
+        this.chasingEnemies.forEach(chasingEnemy -> chasingEnemy.render(graphics));
+        this.shootingEnemies.forEach(shootingEnemy -> shootingEnemy.render(graphics));
         this.repaint();
     }
 
@@ -88,8 +91,10 @@ public class GameCanvas extends JPanel {
         Star.createStar();
         this.stars.forEach(star -> star.run());
 
-        Enemy.createEnemy();
-        this.enemies.forEach(enemy -> enemy.run());
+        Enemy.createChasingEnemy();
+        Enemy.createShootingEnemy();
+        this.chasingEnemies.forEach(chasingEnemy -> chasingEnemy.chasingEnemyRun());
+        this.shootingEnemies.forEach(shootingEnemy -> shootingEnemy.shootingEnemyRun());
     }
 
     public static BufferedImage loadImage(String path) {
