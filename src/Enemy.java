@@ -24,7 +24,7 @@ public class Enemy {
     private int timeIntervalBullet = 0;
 
     public static Random random = new Random();
-    
+
     public Enemy() {
         this.position = new Vector2D();
         this.velocity = new Vector2D();

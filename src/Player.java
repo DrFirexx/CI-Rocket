@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 
@@ -12,6 +13,8 @@ public class Player {
     private Polygon polygon;
 
     public double angle = 0.0;
+
+    private Random random = new Random();
 
     public Player() {
         this.position = new Vector2D();
@@ -28,23 +31,21 @@ public class Player {
     public void run() {
         this.position.addUp(this.velocity);
 
-//        public void playerMovement() {
-//            if (player.x[0] > 1024){
-//                player.x[0] = 0 + player.width;
-//                player.y[0] = random.nextInt(600);
-//            } else if (player.x[0] < 0) {
-//                player.x[0] = 1024;
-//                player.y[0] = random.nextInt(600);
-//            }
-//
-//            if (player.y[0] > 600) {
-//                player.y[0] = 0 + player.height;
-//                player.x[0] = random.nextInt(1024);
-//            } else if (player.y[0] < 0) {
-//                player.y[0] = 600 - player.height;
-//                player.x[0] = random.nextInt(1024);
-//            }
-//        }
+        if (this.position.x > 1024) {
+                this.position.x = 0;
+                this.position.y = random.nextInt(600);
+        } else if (this.position.x < 0) {
+                this.position.x = 1024;
+                this.position.y = random.nextInt(600);
+        }
+
+        if (this.position.y > 600) {
+                this.position.y = 0;
+                this.position.x = random.nextInt(1024);
+        } else if (this.position.y < 0) {
+                this.position.y = 600;
+                this.position.x = random.nextInt(1024);
+        }
     }
 
     public void render(Graphics graphics) {
