@@ -1,15 +1,16 @@
 import java.awt.*;
 
-public class Star {
+public class EnemyFollow {
 
     public Vector2D position;
     public Vector2D velocity;
     public Renderer renderer;
 
-    public Star() {
+
+    public EnemyFollow() {
         this.position = new Vector2D();
         this.velocity = new Vector2D();
-        this.renderer = new ImageRenderer("resources/images/star.png", 5, 5);
+        this.renderer = new ImageRenderer("resources/images/circle.png", 20, 20);
     }
 
     public void render(Graphics graphics) {
@@ -17,6 +18,11 @@ public class Star {
     }
 
     public void run() {
-        this.position.subtractBy(this.velocity);
+        this.position.addUp(this.velocity);
     }
+
+    public void update(Vector2D position) {
+        this.velocity.set(position.subtract(this.position).normalize()).multiply(1.5f);
+    }
+
 }
