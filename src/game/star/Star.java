@@ -1,21 +1,19 @@
-import java.awt.*;
+package game.star;
 
-public class Star {
+import base.GameObject;
+import base.Vector2D;
+import renderer.ImageRenderer;
 
-    public Vector2D position;
+public class Star extends GameObject {
+
     public Vector2D velocity;
-    public Renderer renderer;
 
     public Star() {
-        this.position = new Vector2D();
         this.velocity = new Vector2D();
         this.renderer = new ImageRenderer("resources/images/star.png", 5, 5);
     }
 
-    public void render(Graphics graphics) {
-        this.renderer.render(graphics, this.position);
-    }
-
+    @Override
     public void run() {
         this.position.subtractBy(this.velocity);
     }

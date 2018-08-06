@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
+package game.player;
+
+import base.FrameCounter;
+import base.GameObjectManager;
 
 public class PlayerAttack implements PlayerShoot {
 
-    public List<BulletPlayer> bulletPlayers = new ArrayList<>();
     private FrameCounter frameCounter = new FrameCounter(40);
 
     @Override
@@ -12,11 +13,8 @@ public class PlayerAttack implements PlayerShoot {
             BulletPlayer bulletPlayer = new BulletPlayer();
             bulletPlayer.position.set(player.position);
             bulletPlayer.velocity.set(player.velocity.copy()).multiply(1.5f);
-            this.bulletPlayers.add(bulletPlayer);
+            GameObjectManager.instance.add(bulletPlayer);
             this.frameCounter.resetCount();
-        } else {
-            this.frameCounter.increment();
         }
-        this.bulletPlayers.forEach(bulletPlayer -> bulletPlayer.run());
     }
 }

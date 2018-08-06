@@ -1,3 +1,5 @@
+package base;
+
 public class FrameCounter {
 
     private int counter;
@@ -12,12 +14,9 @@ public class FrameCounter {
         if (this.counter == this.timeInterval) {
             return true;
         } else {
+            this.counter += 1;
             return false;
         }
-    }
-
-    public void increment() {
-        this.counter += 1;
     }
 
     public void resetCount() {

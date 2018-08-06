@@ -1,3 +1,11 @@
+import base.GameObject;
+import base.GameObjectManager;
+import game.background.Background;
+import game.enemy.CreateEnemy;
+import game.enemyfollow.CreateEnemyFollow;
+import game.player.Player;
+import game.star.CreateStar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -5,12 +13,9 @@ import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
-    public Background background;
-    public Player player;
+    public static Player player;
 
-    public CreateStar createStar = new CreateStar();
-    public CreateEnemy createEnemy = new CreateEnemy();
-    public CreateEnemyFollow createEnemyFollow = new CreateEnemyFollow();
+    public CreateEnemyFollow createEnemyFollow;
 
     // Tao 1 backbuffer
     private BufferedImage backBuffered;
@@ -23,7 +28,7 @@ public class GameCanvas extends JPanel {
         // Cho de ve tat ca moi thu len
         this.setSize(1024, 600);
         this.setupBackBuffered();
-        this.setupBackground();
+        this.setupCharacter();
         this.setupPlayer();
         // draw
         this.setVisible(true);
@@ -36,14 +41,18 @@ public class GameCanvas extends JPanel {
         this.graphics = this.backBuffered.getGraphics();
     }
 
-    private void setupBackground() {
-        this.background = new Background();
+    private void setupCharacter() {
+        GameObjectManager.instance.add(new Background());
+        GameObjectManager.instance.add(new CreateStar());
+        GameObjectManager.instance.add(new CreateEnemy());
+        this.createEnemyFollow = new CreateEnemyFollow();
     }
 
     private void setupPlayer() {
         this.player = new Player();
         this.player.position.set(200, 300);
         this.player.velocity.set(3.5f, 0);
+        GameObjectManager.instance.add(this.player);
     }
 
     // Noi de ve len trong gameCanvas
@@ -56,30 +65,16 @@ public class GameCanvas extends JPanel {
 
     // Ve het len backbuffer
     public void renderAll() {
-        this.background.render(graphics);
+        GameObjectManager.instance.renderAll(graphics);
 
-        this.createStar.stars.forEach(star -> star.render(graphics));
-
-        this.player.render(this.graphics);
-
-        this.createEnemy.enemies.forEach(shootingEnemy -> shootingEnemy.render(graphics));
-
-        this.createEnemyFollow.enemiesFollow.forEach(enemyFollow -> enemyFollow.render(graphics));
+        this.createEnemyFollow.render(graphics);
 
         this.repaint();
     }
 
     public void runAll() {
-        this.player.run();
+        GameObjectManager.instance.runAll();
 
-        this.createStar.create();
-        this.createStar.stars.forEach(star -> star.run());
-
-        this.createEnemyFollow.create();
-        this.createEnemyFollow.enemiesFollow.forEach(enemyFollow -> enemyFollow.run());
-        this.createEnemyFollow.enemiesFollow.forEach(enemyFollow -> enemyFollow.update(this.player.position));
-
-        this.createEnemy.create();
-        this.createEnemy.enemies.forEach(shootingEnemy -> shootingEnemy.run());
+        this.createEnemyFollow.run();
     }
 }

@@ -1,9 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
+package game.enemy;
+
+import base.FrameCounter;
+import base.GameObjectManager;
+import base.Vector2D;
 
 public class EnemyAttack implements EnemyShoot {
 
-    public List<BulletEnemy> bulletEnemies = new ArrayList<>();
     private FrameCounter frameCounter = new FrameCounter(30);
 
     @Override
@@ -13,13 +15,10 @@ public class EnemyAttack implements EnemyShoot {
                 BulletEnemy bulletEnemy = new BulletEnemy();
                 bulletEnemy.position.set(enemy.position);
                 bulletEnemy.velocity.set(new Vector2D(2, 0).rotate(angle));
-                this.bulletEnemies.add(bulletEnemy);
-                this.frameCounter.resetCount();
+                GameObjectManager.instance.add(bulletEnemy);
             }
-        } else {
-            this.frameCounter.increment();
+            this.frameCounter.resetCount();
         }
-        this.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.run());
     }
 }
 
