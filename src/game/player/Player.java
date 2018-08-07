@@ -18,8 +18,6 @@ public class Player extends GameObject {
 
     private Random random = new Random();
 
-    Vector2D defaultVelocity = new Vector2D(3.5f, 0);
-
     public Player() {
         this.velocity = new Vector2D();
 
@@ -39,10 +37,10 @@ public class Player extends GameObject {
 
         this.moveAround();
         this.position.addUp(this.velocity);
+        this.backToScreen();
 
         ((PolygonRenderer) this.renderer).angle = this.angle;
 
-        this.backToScreen();
         this.playerShoot.run(this);
     }
 
@@ -54,34 +52,13 @@ public class Player extends GameObject {
     }
 
     public void moveAround() {
-//        switch (KeyListener.instance.getCommand()) {
-//            case "angle += 5":
-//                this.angle += 5;
-//                this.velocity.set(new Vector2D(3.5f, 0).rotate(this.angle));
-//                break;
-//            case "angle -= 5":
-//                this.angle -= 5;
-//                this.velocity.set(new Vector2D(3.5f, 0).rotate(this.angle));
-//                break;
-//            case "speed * 2":
-//                this.velocity.multiply(2);
-//                break;
-//            case "speed / 2":
-//                this.velocity.multiply(0.5f);
-//                break;
-//        }
-        if (KeyListener.instance.getCommand() == "turn right clockwise") {
-            this.angle += 5;
-        }  if (KeyListener.instance.getCommand() == "turn left anticlockwise") {
-            this.angle -= 5;
-        }  if (KeyListener.instance.getCommand() == "speed up") {
-            defaultVelocity = defaultVelocity.multiply(2);
-        }  if (KeyListener.instance.getCommand() == "speed down") {
-//            this.velocity.multiply(0.5f);
-            defaultVelocity = new Vector2D(3.5f, 0);
-        }
+        if (KeyListener.instance.getCommand() == "turn right clockwise") this.angle += 5;
+        if (KeyListener.instance.getCommand() == "turn left anticlockwise") this.angle -= 5;
+        this.velocity.set(new Vector2D(3.5f, 0).rotate(this.angle));
 
-        this.velocity.set(defaultVelocity.rotate(this.angle));
+        if (KeyListener.instance.getCommand() == "speed up") this.velocity.multiply(4);
+        if (KeyListener.instance.getCommand() == "speed down") this.velocity.multiply(0.25f);
+
         KeyListener.instance.resetCommand();
     }
 }

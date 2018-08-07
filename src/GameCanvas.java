@@ -1,4 +1,3 @@
-import base.GameObject;
 import base.GameObjectManager;
 import game.background.Background;
 import game.enemy.CreateEnemy;
