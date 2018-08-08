@@ -87,7 +87,7 @@ public class Vector2D {
                             this.x*sin + this.y*cos);
     }
 
-    public Vector2D normalize() {
+    public Vector2D normalized() {
         float length = this.length();
         return new Vector2D(this.x/length, this.y/length);
     }
