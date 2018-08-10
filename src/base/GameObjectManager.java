@@ -1,5 +1,6 @@
 package base;
 
+import game.enemy.BulletEnemy;
 import game.enemy.Enemy;
 import game.enemyfollow.EnemyFollow;
 import game.player.BulletPlayer;
@@ -50,7 +51,7 @@ public class GameObjectManager {
                 .forEach(gameObject -> gameObject.render(graphics));
     }
 
-    public EnemyFollow checkCollision(BulletPlayer bulletPlayer) {
+    public EnemyFollow checkCollision1(BulletPlayer bulletPlayer) {
         return (EnemyFollow) this.list
                 .stream()
                 .filter(gameObject -> gameObject.isAlive)
@@ -61,5 +62,30 @@ public class GameObjectManager {
                 })
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Enemy checkCollision2(BulletPlayer bulletPlayer) {
+        return (Enemy) this.list
+                .stream()
+                .filter(gameObject -> gameObject.isAlive)
+                .filter(gameObject -> gameObject instanceof Enemy)
+                .filter(gameObject -> {
+                    BoxCollider other = ((Enemy) gameObject).boxCollider;
+                    return bulletPlayer.boxCollider.checkCollision(other);
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean checkCollision3(BulletEnemy bulletEnemy) {
+        return  bulletEnemy.boxCollider.checkCollision(this.findPlayer().boxCollider);
+    }
+
+    public boolean checkCollision4(Enemy enemy) {
+        return  enemy.boxCollider.checkCollision(this.findPlayer().boxCollider);
+    }
+
+    public boolean checkCollision5(EnemyFollow enemyFollow) {
+        return  enemyFollow.boxCollider.checkCollision(this.findPlayer().boxCollider);
     }
 }

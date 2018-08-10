@@ -30,6 +30,10 @@ public class EnemyFollow extends GameObject {
         if (player != null) {
             this.update(player.position);
         }
+
+        if (GameObjectManager.instance.checkCollision5(this)) {
+            GameObjectManager.instance.findPlayer().isAlive = false;
+        }
     }
 
     private void update(Vector2D position) {

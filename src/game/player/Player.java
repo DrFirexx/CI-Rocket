@@ -2,6 +2,7 @@ package game.player;
 
 import base.GameObject;
 import base.Vector2D;
+import physic.BoxCollider;
 import renderer.PolygonRenderer;
 
 import java.awt.*;
@@ -11,6 +12,8 @@ public class Player extends GameObject {
     public Vector2D velocity;
 
     public double angle = 0.0;
+
+    public BoxCollider boxCollider;
 
     public Player() {
         this.velocity = new Vector2D();
@@ -23,12 +26,15 @@ public class Player extends GameObject {
         );
         this.attributes.add(new PlayerShoot());
         this.attributes.add(new PlayerMove());
+        this.boxCollider = new BoxCollider(16, 20);
     }
 
     @Override
     public void run() {
         super.run();
         ((PolygonRenderer) this.renderer).angle = this.angle;
+
+        this.boxCollider.position.set(this.position.x - 10, this.position.y - 8);
     }
 }
 
