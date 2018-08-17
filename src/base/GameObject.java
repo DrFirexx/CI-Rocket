@@ -29,4 +29,6 @@ public class GameObject {
             this.renderer.render(graphics, this.position);
         }
     }
+
+
 }

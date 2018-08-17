@@ -20,12 +20,10 @@ public class CreateStar extends GameObject {
     public void run() {
         super.run();
         if (frameCounter.checkCounter()) {
-            Star star = new Star();
+            Star star = GameObjectManager.instance.recycle(Star.class);
             star.position.set(1024, random.nextInt(600));
             star.velocity.set(random.nextInt(10)+1, 0);
-
-            GameObjectManager.instance.add(star);
-            frameCounter.resetCount();
+            this.frameCounter.resetCount();
         }
     }
 }

@@ -15,6 +15,10 @@ public class Star extends GameObject {
 
     @Override
     public void run() {
+        super.run();
         this.position.subtractBy(this.velocity);
+        if (this.position.x < 0) {
+            this.isAlive = false;
+        }
     }
 }

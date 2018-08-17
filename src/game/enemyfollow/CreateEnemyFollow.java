@@ -15,9 +15,8 @@ public class CreateEnemyFollow extends GameObject {
     public void run() {
         super.run();
         if (this.frameCounter.checkCounter()) {
-            EnemyFollow enemyFollow = new EnemyFollow();
+            EnemyFollow enemyFollow = GameObjectManager.instance.recycle(EnemyFollow.class);
             enemyFollow.position.set(this.random.nextInt(1024), this.random.nextInt(600));
-            GameObjectManager.instance.add(enemyFollow);
             this.frameCounter.resetCount();
         }
     }

@@ -11,11 +11,10 @@ public class PlayerShoot implements Attribute<Player> {
     @Override
     public void run(Player gameObject) {
         if (this.frameCounter.checkCounter()) {
-            BulletPlayer bulletPlayer = new BulletPlayer();
+            BulletPlayer bulletPlayer = GameObjectManager.instance.recycle(BulletPlayer.class);
             bulletPlayer.position.set(gameObject.position);
             bulletPlayer.velocity.set(gameObject.velocity.copy()).multiply(1.5f);
 
-            GameObjectManager.instance.add(bulletPlayer);
             this.frameCounter.resetCount();
         }
     }
